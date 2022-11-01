@@ -7,11 +7,21 @@ namespace GameResources.Coin.Scripts
     [RequireComponent(typeof(Collider))]
     public class Coin : MonoBehaviour
     {
-        public event Action OnCollected;
-        
+        public event Action<int> OnCollected;
+
+        [SerializeField]
+        private int value;
+
+        private bool _isCollected;
+
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out CubeController cube))
+            if (_isCollected)
+            {
+                return;
+            }
+            
+            if (other.attachedRigidbody.TryGetComponent(out CubeController cube))
             {
                 Collect();
             }
@@ -19,9 +29,10 @@ namespace GameResources.Coin.Scripts
 
         private void Collect()
         {
-            OnCollected?.Invoke();
+            _isCollected = true;
+            OnCollected?.Invoke(value);
 
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

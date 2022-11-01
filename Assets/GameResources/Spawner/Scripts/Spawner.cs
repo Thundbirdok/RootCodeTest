@@ -1,10 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace GameResources.Spawner.Scripts
 {
-    public class Spawner : MonoBehaviour
+    [Serializable]
+    public class Spawner
     {
+        private readonly List<GameObject> _spawnedObjects = new List<GameObject>();
+        public IReadOnlyList<GameObject> SpawnedObjects => _spawnedObjects;
+        
         [SerializeField] [Range(1, 1000)]
         private int amount;
 
@@ -16,28 +24,49 @@ namespace GameResources.Spawner.Scripts
     
         [SerializeField]
         private GameObject prefab;
-    
-        private void Start()
-        {
-            Spawn();
-        }
 
-        private void Spawn()
+        [SerializeField]
+        private int maxSpawnPerFrame = 10;
+
+        private Vector2 _min;
+        private Vector2 _max;
+        
+        public async Task Spawn()
         {
-            var min = new Vector2(spawnZone.LeftDown.x, spawnZone.LeftDown.z);
-            var max = new Vector2(spawnZone.RightTop.x, spawnZone.RightTop.z);
+            var spawnPerFrameCount = 0;
+            
+            _min = new Vector2(spawnZone.LeftDown.x, spawnZone.LeftDown.z);
+            _max = new Vector2(spawnZone.RightTop.x, spawnZone.RightTop.z);
             
             for (var i = 0; i < amount; ++i)
             {
-                var x = Random.Range(min.x, max.x);
-                var z = Random.Range(min.y, max.y);
-            
-                var position = new Vector3(x, 0, z);
+                SpawnObject();
 
-                position = spawnZone.transform.TransformPoint(position);
+                spawnPerFrameCount++;
                 
-                Instantiate(prefab, position, Quaternion.identity, container);
+                if (spawnPerFrameCount != maxSpawnPerFrame)
+                {
+                    continue;
+                }
+
+                spawnPerFrameCount = 0;
+
+                await Task.Yield();
             }
+        }
+
+        private void SpawnObject()
+        {
+            var x = Random.Range(_min.x, _max.x);
+            var z = Random.Range(_min.y, _max.y);
+
+            var position = new Vector3(x, 0, z);
+
+            position = spawnZone.transform.TransformPoint(position);
+
+            var spawnedObject = Object.Instantiate(prefab, position, Quaternion.identity, container);
+
+            _spawnedObjects.Add(spawnedObject);
         }
     }
 }

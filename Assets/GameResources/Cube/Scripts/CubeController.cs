@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 namespace GameResources.Cube.Scripts
 {
     public class CubeController : MonoBehaviour
     {
+        public event Action OnFinish;
+        
         [SerializeField]
         private float closeEnoughToPointDistance = 0.01f;
 
@@ -13,13 +16,18 @@ namespace GameResources.Cube.Scripts
         [SerializeField]
         private Transform[] path;
 
-        private bool _isMoving = true;
+        private bool _isMoving = false;
         
         private int _pointIndex = 1;
 
-        private void Start() => SetStartPosition();
-
         private void FixedUpdate() => Move();
+
+        public void StartMove()
+        {
+            SetStartPosition();
+
+            _isMoving = true;
+        }
 
         private void SetStartPosition()
         {
@@ -38,7 +46,7 @@ namespace GameResources.Cube.Scripts
             var currentPosition = new Vector2(transform.position.x, transform.position.z);
             var newPosition = Vector2.MoveTowards(currentPosition, nextPoint, speed);
 
-            transform.position = new Vector3(newPosition.x, 0.5f, newPosition.y);
+            transform.position = new Vector3(newPosition.x, 0, newPosition.y);
 
             var sqrMagnitude = (newPosition - nextPoint).sqrMagnitude;
 
@@ -49,10 +57,14 @@ namespace GameResources.Cube.Scripts
 
             ++_pointIndex;
 
-            if (_pointIndex >= path.Length)
+            if (_pointIndex < path.Length)
             {
-                _isMoving = false;
+                return;
             }
+
+            _isMoving = false;
+                
+            OnFinish?.Invoke();
         }
 
         private Vector2 GetPointOnPlane(int index)
