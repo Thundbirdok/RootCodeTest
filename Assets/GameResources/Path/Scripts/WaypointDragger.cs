@@ -35,6 +35,11 @@ namespace GameResources.Path.Scripts
         
         public void SelectWaypoint(Waypoint waypoint)
         {
+            if (SelectedWaypoint != null)
+            {
+                return;
+            }
+            
             SelectedWaypoint = waypoint;
 
             SelectedWaypoint.transform.position = pointer.PointerPosition;
