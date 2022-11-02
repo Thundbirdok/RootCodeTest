@@ -13,7 +13,7 @@ namespace GameResources.Score.Scripts
         public event Action OnCurrentScoreChanged;
         public event Action OnBestScoreChanged;
         
-        private int _currentScore;
+        private int _currentScore = 0;
 
         public int CurrentScore
         {
@@ -40,16 +40,11 @@ namespace GameResources.Score.Scripts
             }
         }
         
-        private int _bestScore;
+        private int _bestScore = 0;
         public int BestScore
         {
             get
             {
-                if (_isInited == false)
-                {
-                    Init();
-                }
-
                 return _bestScore;
             }
 
@@ -61,15 +56,13 @@ namespace GameResources.Score.Scripts
             }
         }
         
-        private const string FILE_NAME = "BestScore.json";
+        private const string FILE_NAME = "/BestScore.json";
 
         private const string BEST_SCORE_KEY = "BestScore";
         
         private static string JsonPath => Application.persistentDataPath + FILE_NAME;
         
-        private JObject _jObject;
-
-        private bool _isInited;
+        private JObject _jObject = null;
 
         public void AddPoints(int value)
         {
@@ -78,9 +71,19 @@ namespace GameResources.Score.Scripts
 
         public void ResetCurrentScore()
         {
-            _currentScore = 0;
+            CurrentScore = 0;
         }
 
+        public void Load()
+        {
+            CurrentScore = 0;
+            BestScore = 0;
+            
+            GetJObject();
+
+            GetBestScore();
+        }
+        
         public void Save()
         {
             var saveJObject = new JObject();
@@ -90,17 +93,6 @@ namespace GameResources.Score.Scripts
             using var file = File.CreateText(JsonPath);
             using JsonTextWriter writer = new(file);
             saveJObject.WriteTo(writer);
-        }
-        
-        private void Init()
-        {
-            ResetCurrentScore();
-            
-            GetJObject();
-
-            GetBestScore();
-
-            _isInited = true;
         }
 
         private void GetJObject()
@@ -122,7 +114,7 @@ namespace GameResources.Score.Scripts
         {
             var token = _jObject.SelectToken(BEST_SCORE_KEY);
 
-            _bestScore = token?.Value<int>() ?? 0;
+            BestScore = token?.Value<int>() ?? 0;
         }
     }
 }
