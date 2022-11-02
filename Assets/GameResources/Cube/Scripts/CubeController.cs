@@ -1,4 +1,5 @@
 using System;
+using GameResources.Path.Scripts;
 using UnityEngine;
 
 namespace GameResources.Cube.Scripts
@@ -14,9 +15,9 @@ namespace GameResources.Cube.Scripts
         private float speed;
     
         [SerializeField]
-        private Transform[] path;
+        private PathContainer path;
 
-        private bool _isMoving = false;
+        private bool _isMoving;
         
         private int _pointIndex = 1;
 
@@ -31,7 +32,7 @@ namespace GameResources.Cube.Scripts
 
         private void SetStartPosition()
         {
-            transform.position = GetPointOnPlane(0);
+            transform.position = path.GetPointOnPlane(0);
         }
         
         private void Move()
@@ -41,7 +42,7 @@ namespace GameResources.Cube.Scripts
                 return;
             }
 
-            var nextPoint = GetPointOnPlane(_pointIndex);
+            var nextPoint = path.GetPointOnPlane(_pointIndex);
 
             var currentPosition = new Vector2(transform.position.x, transform.position.z);
             var newPosition = Vector2.MoveTowards(currentPosition, nextPoint, speed);
@@ -57,7 +58,7 @@ namespace GameResources.Cube.Scripts
 
             ++_pointIndex;
 
-            if (_pointIndex < path.Length)
+            if (path.IsPathFinished(_pointIndex))
             {
                 return;
             }
@@ -65,11 +66,6 @@ namespace GameResources.Cube.Scripts
             _isMoving = false;
                 
             OnFinish?.Invoke();
-        }
-
-        private Vector2 GetPointOnPlane(int index)
-        {
-            return new Vector2(path[index].position.x, path[index].position.z);
         }
     }
 }
