@@ -2,17 +2,31 @@ using System.Collections.Generic;
 using System.Linq;
 using GameResources.Cube.Scripts;
 using GameResources.GameStateMachine.Scripts.States;
+using GameResources.UI.Scripts;
 using UnityEngine;
 
 namespace GameResources.GameStateMachine.Scripts
 {
+    using NewGameStarter.Scripts;
+    
     public class GameStateMachine : MonoBehaviour
     {
         [SerializeField]
         private CubesController cubesController;
 
-        private IState _state;
+        [SerializeField]
+        private GameUI gameUI;
+        
+        [SerializeField]
+        private PauseUI pauseUI;
 
+        [SerializeField]
+        private GameOverUI gameOverUi;
+        
+        [SerializeField]
+        private NewGameStarter newGameStarter;
+        
+        private IState _state;
         private IState State
         {
             get
@@ -28,28 +42,41 @@ namespace GameResources.GameStateMachine.Scripts
             }
         }
         
-        
         private List<IDependOnState> _depends = new List<IDependOnState>(); 
 
         private void OnEnable()
         {
             GetAllDependedOnState();
+
+            StartNewGame();
             
-            State = new Game();
-            
+            gameUI.OnPauseClicked += SetPauseState;
+            pauseUI.OnContinueClicked += SetGameState;
+            gameOverUi.OnPlayAgainClicked += StartNewGame;
             cubesController.OnAllCubesFinish += SetGameOverState;
         }
 
         private void OnDisable()
         {
+            gameUI.OnPauseClicked -= SetPauseState;
+            pauseUI.OnContinueClicked -= SetGameState;
+            gameOverUi.OnPlayAgainClicked -= StartNewGame;
             cubesController.OnAllCubesFinish -= SetGameOverState;
         }
 
-        private void SetGameOverState()
-        {
-            State = new GameOver();
-        }
+        private void SetGameState() => State = new Game();
 
+        private void SetPauseState() => State = new States.Pause();
+
+        private void SetGameOverState() => State = new GameOver();
+
+        private void StartNewGame()
+        {
+            newGameStarter.StartNewGame();
+            
+            State = new Game();
+        }
+        
         private void GetAllDependedOnState()
         {
             _depends = FindObjectsOfType<MonoBehaviour>(true)

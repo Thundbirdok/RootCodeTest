@@ -2,11 +2,11 @@ using GameResources.Pause;
 
 namespace GameResources.GameStateMachine.Scripts.States
 {
-    public class Game : IState
+    public class Pause : IState
     {
-        public Game()
+        public Pause()
         {
-            PauseController.Unpause();
+            PauseController.Pause();
         }
     }
 }

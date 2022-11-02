@@ -1,11 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using Random = UnityEngine.Random;
 
 namespace GameResources.Path.Scripts
 {
-    public class WaypointContainer : MonoBehaviour, IDragHandler
+    public class PathController : MonoBehaviour
     {
         public event Action OnFreeWaypointChanged;
 
@@ -30,20 +29,27 @@ namespace GameResources.Path.Scripts
             }
         }
 
+        public IReadOnlyList<Waypoint> Path => pathContainer.Path;
+
+        public Vector3 StartPosition => pathContainer.StartPosition;
+        
         [SerializeField]
         private PathContainer pathContainer;
 
         [SerializeField]
         private WaypointDragger waypointDragger;
-        
-        private void OnEnable()
-        {
-            pathContainer.Init();
 
-            FreeWaypointsAmount = Random.Range(3, 7);
+        public void Init(int value)
+        {
+            FreeWaypointsAmount = value;
+            
+            pathContainer.Init();
         }
 
-        private void CreateWaypoint()
+        public bool IsPathFinished(int index) => pathContainer.IsPathFinished(index);
+        public Vector3 GetPointOnPlane(int index) => pathContainer.GetPointOnPlane(index);
+
+        public void CreateWaypoint()
         {
             if (FreeWaypointsAmount == 0)
             {
@@ -62,7 +68,7 @@ namespace GameResources.Path.Scripts
             waypointDragger.SelectWaypoint(draggedWaypoint);
         }
 
-        private void DeleteWaypoint()
+        public void DeleteWaypoint()
         {
             var waypoint = waypointDragger.SelectedWaypoint;
             
@@ -76,18 +82,6 @@ namespace GameResources.Path.Scripts
             waypointDragger.UnselectWaypoint();
 
             FreeWaypointsAmount++;
-        }
-
-        public void OnDrag(PointerEventData eventData)
-        {
-            if (EventSystem.current.IsPointerOverGameObject() == false)
-            {
-                CreateWaypoint();
-
-                return;
-            }
-
-            DeleteWaypoint();
         }
     }
 }

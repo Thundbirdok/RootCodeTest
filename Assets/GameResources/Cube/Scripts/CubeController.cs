@@ -15,7 +15,7 @@ namespace GameResources.Cube.Scripts
         private float speed;
     
         [SerializeField]
-        private PathContainer path;
+        private PathController pathController;
 
         private bool _isMoving;
         
@@ -23,18 +23,14 @@ namespace GameResources.Cube.Scripts
 
         private void FixedUpdate() => Move();
 
-        public void StartMove()
+        public void SetStartPosition()
         {
-            SetStartPosition();
-
-            _isMoving = true;
-        }
-
-        private void SetStartPosition()
-        {
-            transform.position = path.GetPointOnPlane(0);
+            transform.position = pathController.StartPosition;
+            _pointIndex = 1;
         }
         
+        public void StartMove() => _isMoving = true;
+
         private void Move()
         {
             if (_isMoving == false)
@@ -42,7 +38,7 @@ namespace GameResources.Cube.Scripts
                 return;
             }
 
-            if (path.IsPathFinished(_pointIndex))
+            if (pathController.IsPathFinished(_pointIndex))
             {
                 _isMoving = false;
                 
@@ -51,8 +47,14 @@ namespace GameResources.Cube.Scripts
                 return;
             }
             
-            var nextPoint = path.GetPointOnPlane(_pointIndex);
-            var newPosition = Vector3.MoveTowards(transform.position, nextPoint, speed);
+            var nextPoint = pathController.GetPointOnPlane(_pointIndex);
+            
+            var newPosition = Vector3.MoveTowards
+            (
+                transform.position, 
+                nextPoint, 
+                speed
+            );
 
             transform.position = newPosition;
 

@@ -1,4 +1,6 @@
 using System;
+using GameResources.GameStateMachine.Scripts;
+using GameResources.GameStateMachine.Scripts.States;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -6,12 +8,15 @@ namespace GameResources.Path.Scripts
 {
     using Ground.Scripts;
     
-    public class Pointer : MonoBehaviour
+    public class Pointer : MonoBehaviour, IDependOnState
     {
         public event Action OnPointerPositionChanged;
         public event Action OnPointerUp;
 
         public event Action<Waypoint> OnPointerDownOnWaypoint;
+
+        public bool IsActiveInThisState => true;
+        public Type State => typeof(Game);
         
         private Vector3 _pointerPosition;
         public Vector3 PointerPosition
@@ -42,6 +47,10 @@ namespace GameResources.Path.Scripts
         private readonly RaycastHit[] _hits = new RaycastHit[5];
 
         private void Update() => CheckPointerPosition();
+
+        public void Activate() => gameObject.SetActive(true);
+
+        public void Deactivate() => gameObject.SetActive(false);
 
         private void CheckPointerPosition()
         {

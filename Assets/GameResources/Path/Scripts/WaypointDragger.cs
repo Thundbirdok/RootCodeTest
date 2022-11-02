@@ -1,15 +1,20 @@
 using System;
+using GameResources.GameStateMachine.Scripts;
+using GameResources.GameStateMachine.Scripts.States;
 using UnityEngine;
 
 namespace GameResources.Path.Scripts
 {
-    public class WaypointDragger : MonoBehaviour
+    public class WaypointDragger : MonoBehaviour, IDependOnState
     {
         [SerializeField]
         private Pointer pointer;
 
         public Waypoint SelectedWaypoint { get; private set; }
 
+        public bool IsActiveInThisState => true;
+        public Type State => typeof(Game);
+        
         private void OnEnable()
         {
             pointer.OnPointerUp += UnselectWaypoint;
@@ -23,7 +28,11 @@ namespace GameResources.Path.Scripts
             pointer.OnPointerPositionChanged -= DragWaypoint;
             pointer.OnPointerDownOnWaypoint -= SelectWaypoint;
         }
+        
+        public void Activate() => gameObject.SetActive(true);
 
+        public void Deactivate() => gameObject.SetActive(false);
+        
         public void SelectWaypoint(Waypoint waypoint)
         {
             SelectedWaypoint = waypoint;

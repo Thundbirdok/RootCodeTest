@@ -33,6 +33,8 @@ namespace GameResources.Spawner.Scripts
         
         public async Task Spawn()
         {
+            Clear();
+            
             var spawnPerFrameCount = 0;
             
             _min = new Vector2(spawnZone.LeftDown.x, spawnZone.LeftDown.z);
@@ -67,6 +69,16 @@ namespace GameResources.Spawner.Scripts
             var spawnedObject = Object.Instantiate(prefab, position, Quaternion.identity, container);
 
             _spawnedObjects.Add(spawnedObject);
+        }
+
+        private void Clear()
+        {
+            foreach (var spawned in _spawnedObjects)
+            {
+                Object.Destroy(spawned);
+            }
+            
+            _spawnedObjects.Clear();
         }
     }
 }

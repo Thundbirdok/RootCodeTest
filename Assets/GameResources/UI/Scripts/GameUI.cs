@@ -9,17 +9,23 @@ namespace GameResources.UI.Scripts
     public class GameUI : MonoBehaviour, IDependOnState
     {
         public event Action OnStartClicked;
+        public event Action OnPauseClicked;
         
         public bool IsActiveInThisState => true;
         public Type State => typeof(Game);
 
         [SerializeField]
-        private Button button;
+        private Button start;
+
+        [SerializeField]
+        private Button pause;
         
         public void Activate()
         {
-            button.onClick.AddListener(InvokeOnStartClick);
+            start.onClick.AddListener(InvokeOnStartClick);
+            pause.onClick.AddListener(InvokePauseClick);
             
+            start.gameObject.SetActive(true);
             gameObject.SetActive(true);
         }
 
@@ -27,12 +33,17 @@ namespace GameResources.UI.Scripts
         {
             gameObject.SetActive(false);
             
-            button.onClick.RemoveListener(InvokeOnStartClick);
+            start.onClick.RemoveListener(InvokeOnStartClick);
+            pause.onClick.RemoveListener(InvokePauseClick);
         }
 
         private void InvokeOnStartClick()
         {
+            start.gameObject.SetActive(false);
+            
             OnStartClicked?.Invoke();
         }
+
+        private void InvokePauseClick() => OnPauseClicked?.Invoke();
     }
 }

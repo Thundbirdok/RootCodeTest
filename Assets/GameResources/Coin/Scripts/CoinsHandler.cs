@@ -16,13 +16,13 @@ namespace GameResources.Coin.Scripts
         
         private readonly List<Coin> _coins = new List<Coin>();
 
-        private async void OnEnable()
+        public async void Spawn()
         {
             await coinsSpawner.Spawn();
             
             GetCoins();
         }
-
+        
         private void GetCoins()
         {
             CleanCoins();

@@ -1,39 +1,32 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace GameResources.Path.Scripts
 {
-    public class PathContainer : MonoBehaviour
+    [Serializable]
+    public class PathContainer
     {
+        private readonly List<Waypoint> _path = new List<Waypoint>();
+        public IReadOnlyList<Waypoint> Path => _path;
+        
         [SerializeField]
         private Waypoint prefab;
         
         [SerializeField]
-        private Transform startPosition;
+        private Transform startPoint;
 
+        public Vector3 StartPosition => startPoint.position;
+        
         [SerializeField]
         private Transform container;
-        
-        [SerializeField]
-        private LineRenderer lineRenderer;
-        
-        private readonly List<Waypoint> _path = new List<Waypoint>();
 
         public void Init()
         {
-            _path.Clear();
-            
-            var waypoint = Instantiate(prefab, startPosition.position, Quaternion.identity, container);
-            
-            _path.Add(waypoint);
-        }
+            Clear();
 
-        private void Update()
-        {
-            var positions = _path.Select(x => x.transform.position + new Vector3(0, 0.25f, 0)).ToArray();
-            lineRenderer.positionCount = positions.Length;
-            lineRenderer.SetPositions(positions);
+            CreateStartPoint();
         }
 
         public bool IsPathFinished(int index)
@@ -43,12 +36,17 @@ namespace GameResources.Path.Scripts
         
         public Vector3 GetPointOnPlane(int index)
         {
-            return new Vector3(_path[index].transform.position.x, 0, _path[index].transform.position.z);
+            return new Vector3
+            (
+                _path[index].transform.position.x,
+                0, 
+                _path[index].transform.position.z
+            );
         }
         
         public Waypoint AddWaypoint()
         {
-            var waypoint = Instantiate(prefab, container);
+            var waypoint = Object.Instantiate(prefab, container);
             
             _path.Add(waypoint);
 
@@ -64,7 +62,30 @@ namespace GameResources.Path.Scripts
             
             _path.Remove(waypoint);
             
-            Destroy(waypoint.gameObject);
+            Object.Destroy(waypoint.gameObject);
+        }
+
+        private void Clear()
+        {
+            foreach (var waypoint in _path)
+            {
+                Object.Destroy(waypoint.gameObject);
+            }
+            
+            _path.Clear();
+        }
+
+        private void CreateStartPoint()
+        {
+            var waypoint = Object.Instantiate
+            (
+                prefab, 
+                startPoint.position, 
+                Quaternion.identity, 
+                container
+            );
+            
+            _path.Add(waypoint);
         }
     }
 }
