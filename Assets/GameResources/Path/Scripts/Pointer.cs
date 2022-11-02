@@ -6,11 +6,13 @@ namespace GameResources.Path.Scripts
 {
     using Ground.Scripts;
     
-    public class GroundPointer : MonoBehaviour
+    public class Pointer : MonoBehaviour
     {
         public event Action OnPointerPositionChanged;
         public event Action OnPointerUp;
 
+        public event Action<Waypoint> OnPointerDownOnWaypoint;
+        
         private Vector3 _pointerPosition;
         public Vector3 PointerPosition
         {
@@ -49,21 +51,16 @@ namespace GameResources.Path.Scripts
                 
                 return;
             }
-
-            var isOverUI = EventSystem.current.IsPointerOverGameObject();
-
-            if (isOverUI)
+            
+            if (EventSystem.current.IsPointerOverGameObject())
             {
                 return;
             }
-            
-            if (TryGetPoint(out var point))
-            {
-                PointerPosition = point;
-            }
+
+            Raycast();
         }
 
-        private bool TryGetPoint(out Vector3 point)
+        private void Raycast()
         {
             var ray = raycastCamera.ScreenPointToRay(Input.mousePosition);
 
@@ -71,40 +68,26 @@ namespace GameResources.Path.Scripts
             
             if (size == 0)
             {
-                point = Vector3.zero;
-                
-                return false;
-            }
-            
-            if (TryGetHitOnGround(size, out var hit) == false)
-            {
-                point = Vector3.zero;
-                
-                return false;
+                return;
             }
 
-            point = hit.point;
-
-            return true;
+            GetHits(size);
         }
         
-        private bool TryGetHitOnGround(in int size, out RaycastHit hit)
+        private void GetHits(in int size)
         {
-            hit = new RaycastHit();
-
             for (var i = 0; i < size; ++i)
             {
-                if (_hits[i].collider.TryGetComponent(out Ground _) == false)
+                if (_hits[i].collider.TryGetComponent(out Ground _))
                 {
-                    continue;
+                    PointerPosition = _hits[i].point;
                 }
 
-                hit = _hits[i];
-
-                return true;
+                if (_hits[i].collider.TryGetComponent(out Waypoint waypoint))
+                {
+                    OnPointerDownOnWaypoint?.Invoke(waypoint);
+                }
             }
-
-            return false;
         }
     }
 }

@@ -56,9 +56,7 @@ namespace GameResources.Path.Scripts
             }
             
             var draggedWaypoint = pathContainer.AddWaypoint();
-            
-            draggedWaypoint.Construct(waypointDragger);
-            
+
             FreeWaypointsAmount--;
             
             waypointDragger.SelectWaypoint(draggedWaypoint);

@@ -6,27 +6,29 @@ namespace GameResources.Path.Scripts
     public class WaypointDragger : MonoBehaviour
     {
         [SerializeField]
-        private GroundPointer groundPointer;
+        private Pointer pointer;
 
         public Waypoint SelectedWaypoint { get; private set; }
 
         private void OnEnable()
         {
-            groundPointer.OnPointerUp += UnselectWaypoint;
-            groundPointer.OnPointerPositionChanged += DragWaypoint;
+            pointer.OnPointerUp += UnselectWaypoint;
+            pointer.OnPointerPositionChanged += DragWaypoint;
+            pointer.OnPointerDownOnWaypoint += SelectWaypoint;
         }
 
         private void OnDisable()
         {
-            groundPointer.OnPointerUp -= UnselectWaypoint;
-            groundPointer.OnPointerPositionChanged -= DragWaypoint;
+            pointer.OnPointerUp -= UnselectWaypoint;
+            pointer.OnPointerPositionChanged -= DragWaypoint;
+            pointer.OnPointerDownOnWaypoint -= SelectWaypoint;
         }
 
         public void SelectWaypoint(Waypoint waypoint)
         {
             SelectedWaypoint = waypoint;
 
-            SelectedWaypoint.transform.position = groundPointer.PointerPosition;
+            SelectedWaypoint.transform.position = pointer.PointerPosition;
         }
         
         public void UnselectWaypoint()
@@ -41,7 +43,7 @@ namespace GameResources.Path.Scripts
                 return;
             }
             
-            SelectedWaypoint.transform.position = groundPointer.PointerPosition;
+            SelectedWaypoint.transform.position = pointer.PointerPosition;
         }
     }
 }
