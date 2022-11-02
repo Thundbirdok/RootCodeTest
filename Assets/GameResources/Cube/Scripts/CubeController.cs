@@ -42,30 +42,26 @@ namespace GameResources.Cube.Scripts
                 return;
             }
 
+            if (path.IsPathFinished(_pointIndex))
+            {
+                _isMoving = false;
+                
+                OnFinish?.Invoke();
+                
+                return;
+            }
+            
             var nextPoint = path.GetPointOnPlane(_pointIndex);
+            var newPosition = Vector3.MoveTowards(transform.position, nextPoint, speed);
 
-            var currentPosition = new Vector2(transform.position.x, transform.position.z);
-            var newPosition = Vector2.MoveTowards(currentPosition, nextPoint, speed);
-
-            transform.position = new Vector3(newPosition.x, 0, newPosition.y);
+            transform.position = newPosition;
 
             var sqrMagnitude = (newPosition - nextPoint).sqrMagnitude;
 
-            if (closeEnoughToPointDistance < sqrMagnitude)
+            if (closeEnoughToPointDistance > sqrMagnitude)
             {
-                return;
+                ++_pointIndex;
             }
-
-            ++_pointIndex;
-
-            if (path.IsPathFinished(_pointIndex))
-            {
-                return;
-            }
-
-            _isMoving = false;
-                
-            OnFinish?.Invoke();
         }
     }
 }

@@ -31,17 +31,19 @@ namespace GameResources.Path.Scripts
 
         private void Update()
         {
-            lineRenderer.SetPositions(_path.Select(x => x.transform.position).ToArray());
+            var positions = _path.Select(x => x.transform.position + new Vector3(0, 0.25f, 0)).ToArray();
+            lineRenderer.positionCount = positions.Length;
+            lineRenderer.SetPositions(positions);
         }
 
         public bool IsPathFinished(int index)
         {
-            return index < _path.Count;
+            return index >= _path.Count;
         }
         
-        public Vector2 GetPointOnPlane(int index)
+        public Vector3 GetPointOnPlane(int index)
         {
-            return new Vector2(_path[index].transform.position.x, _path[index].transform.position.z);
+            return new Vector3(_path[index].transform.position.x, 0, _path[index].transform.position.z);
         }
         
         public Waypoint AddWaypoint()
@@ -61,6 +63,8 @@ namespace GameResources.Path.Scripts
             }
             
             _path.Remove(waypoint);
+            
+            Destroy(waypoint.gameObject);
         }
     }
 }

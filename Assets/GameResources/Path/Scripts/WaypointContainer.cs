@@ -76,9 +76,7 @@ namespace GameResources.Path.Scripts
             pathContainer.RemoveWaypoint(waypoint);
 
             waypointDragger.UnselectWaypoint();
-            
-            Destroy(waypoint.gameObject);
-            
+
             FreeWaypointsAmount++;
         }
 
