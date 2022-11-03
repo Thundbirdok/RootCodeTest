@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 namespace GameResources.Spawner.Scripts
 {
     [Serializable]
-    public class Spawner
+    public sealed class Spawner
     {
         private readonly List<GameObject> _spawnedObjects = new List<GameObject>();
         public IReadOnlyList<GameObject> SpawnedObjects => _spawnedObjects;
@@ -31,6 +31,9 @@ namespace GameResources.Spawner.Scripts
         private Vector2 _min;
         private Vector2 _max;
         
+        /// <summary>
+        /// Spawn objects in zone
+        /// </summary>
         public async Task Spawn()
         {
             Clear();

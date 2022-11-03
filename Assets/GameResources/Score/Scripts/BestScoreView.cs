@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameResources.Score.Scripts
 {
-    public class BestScoreView : MonoBehaviour
+    public sealed class BestScoreView : MonoBehaviour
     {
         [SerializeField]
         private TextMeshProUGUI text;
@@ -18,14 +18,8 @@ namespace GameResources.Score.Scripts
             SetText();
         }
 
-        private void OnDisable()
-        {
-            scoreHandler.OnBestScoreChanged -= SetText;
-        }
+        private void OnDisable() => scoreHandler.OnBestScoreChanged -= SetText;
 
-        private void SetText()
-        {
-            text.text = scoreHandler.BestScore.ToString();
-        }
+        private void SetText() => text.text = scoreHandler.BestScore.ToString();
     }
 }

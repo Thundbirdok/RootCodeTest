@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameResources.Path.Scripts
 {
-    public class WaypointDragger : MonoBehaviour, IDependOnState
+    public sealed class WaypointDragger : MonoBehaviour, IDependOnState
     {
         [SerializeField]
         private Pointer pointer;
@@ -33,6 +33,10 @@ namespace GameResources.Path.Scripts
 
         public void Deactivate() => gameObject.SetActive(false);
         
+        /// <summary>
+        /// Select waypoint
+        /// </summary>
+        /// <param name="waypoint"></param>
         public void SelectWaypoint(Waypoint waypoint)
         {
             if (SelectedWaypoint != null)
@@ -45,6 +49,9 @@ namespace GameResources.Path.Scripts
             SelectedWaypoint.transform.position = pointer.PointerPosition;
         }
         
+        /// <summary>
+        /// Unselect waypoint
+        /// </summary>
         public void UnselectWaypoint()
         {
             SelectedWaypoint = null;

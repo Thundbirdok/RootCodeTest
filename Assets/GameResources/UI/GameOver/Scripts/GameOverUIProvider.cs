@@ -8,7 +8,7 @@ namespace GameResources.UI.GameOver.Scripts
 {
     using GameStateMachine.Scripts.States;
     
-    public class GameOverUIProvider : MonoBehaviour, IDependOnState
+    public sealed class GameOverUIProvider : MonoBehaviour, IDependOnState
     {
         public event Action OnPlayAgainClicked;
     
@@ -23,7 +23,7 @@ namespace GameResources.UI.GameOver.Scripts
 
         public async void Activate()
         {
-            var instance = await AddressablesLoader.Instantiate
+            var instance = await AddressablesLoader.InstantiateAndTryGetComponent
             (
                 ui, 
                 transform, 

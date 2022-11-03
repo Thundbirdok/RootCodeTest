@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GameResources.UI.Game.Scripts
 {
-    public class GameUI : MonoBehaviour
+    public sealed class GameUI : MonoBehaviour
     {
         public event Action OnStartClicked;
         public event Action OnPauseClicked;
@@ -22,6 +22,11 @@ namespace GameResources.UI.Game.Scripts
         [SerializeField]
         private Button pause;
 
+        /// <summary>
+        /// Construct ui
+        /// </summary>
+        /// <param name="a">path A</param>
+        /// <param name="b">path B</param>
         public void Construct(PathController a, PathController b)
         {
             waypointContainerViewA.SetPathController(a);

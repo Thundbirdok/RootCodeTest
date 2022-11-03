@@ -11,7 +11,7 @@ namespace GameResources.GameStateMachine.Scripts
 {
     using NewGameStarter.Scripts;
     
-    public class GameStateMachine : MonoBehaviour
+    public sealed class GameStateMachine : MonoBehaviour
     {
         [SerializeField]
         private CubesController cubesController;

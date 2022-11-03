@@ -7,15 +7,24 @@ namespace GameResources.AddressablesHelper
 {
     public static class AddressablesLoader
     {
-        public async static Task<Component> Instantiate(AssetReference asset, Transform parent, Type type)
+        /// <summary>
+        /// Instantiate asset reference and try get component of type
+        /// </summary>
+        /// <param name="asset"></param>
+        /// <param name="parent"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public async static Task<Component> InstantiateAndTryGetComponent(AssetReference asset, Transform parent, Type type)
         {
-            var obj = await asset.InstantiateAsync(parent).Task;
+            var instance = await asset.InstantiateAsync(parent).Task;
 
-            if (obj.TryGetComponent(type, out var component))
+            if (instance.TryGetComponent(type, out var component))
             {
                 return component;
             }
 
+            Unload(asset, instance);
+            
             return null;
         }
 

@@ -4,13 +4,17 @@ using UnityEngine.EventSystems;
 
 namespace GameResources.Path.Scripts
 {
-    public class WaypointContainerView : MonoBehaviour, IDragHandler
+    public sealed class WaypointContainerView : MonoBehaviour, IDragHandler
     {
         [SerializeField]
         private TextMeshProUGUI text;
         
         private PathController _pathController;
         
+        /// <summary>
+        /// Set path controller
+        /// </summary>
+        /// <param name="pathController">Path controller</param>
         public void SetPathController(PathController pathController)
         {
             _pathController = pathController;
@@ -40,9 +44,6 @@ namespace GameResources.Path.Scripts
             _pathController.DeleteWaypoint();
         }
         
-        private void SetText()
-        {
-            text.text = _pathController.FreeWaypointsAmount.ToString();
-        }
+        private void SetText() => text.text = _pathController.FreeWaypointsAmount.ToString();
     }
 }

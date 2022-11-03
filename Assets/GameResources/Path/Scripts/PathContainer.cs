@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 namespace GameResources.Path.Scripts
 {
     [Serializable]
-    public class PathContainer
+    public sealed class PathContainer
     {
         private readonly List<Waypoint> _path = new List<Waypoint>();
         public IReadOnlyList<Waypoint> Path => _path;
@@ -22,6 +22,9 @@ namespace GameResources.Path.Scripts
         [SerializeField]
         private Transform container;
 
+        /// <summary>
+        /// Initialize path
+        /// </summary>
         public void Init()
         {
             Clear();
@@ -29,12 +32,19 @@ namespace GameResources.Path.Scripts
             CreateStartPoint();
         }
 
-        public bool IsPathFinished(int index)
-        {
-            return index >= _path.Count;
-        }
-        
-        public Vector3 GetPointOnPlane(int index)
+        /// <summary>
+        /// Is waypoint with this index exist
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <returns>true if waypoint exist</returns>
+        public bool IsPathFinished(int index) => index >= _path.Count;
+
+        /// <summary>
+        /// Get position of waypoint with this index
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <returns>Position of waypoint</returns>
+        public Vector3 GetWaypointPositionOnGround(int index)
         {
             return new Vector3
             (
@@ -44,6 +54,10 @@ namespace GameResources.Path.Scripts
             );
         }
         
+        /// <summary>
+        /// Create and add waypoint to path
+        /// </summary>
+        /// <returns>Created waypoint</returns>
         public Waypoint AddWaypoint()
         {
             var waypoint = Object.Instantiate(prefab, container);
@@ -53,6 +67,10 @@ namespace GameResources.Path.Scripts
             return waypoint;
         }
 
+        /// <summary>
+        /// Remove this waypoint from path
+        /// </summary>
+        /// <param name="waypoint">Waypoint</param>
         public void RemoveWaypoint(Waypoint waypoint)
         {
             if (_path.Contains(waypoint) == false)

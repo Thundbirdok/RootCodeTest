@@ -9,7 +9,7 @@ namespace GameResources.UI.Game.Scripts
 {
     using GameStateMachine.Scripts.States;
     
-    public class GameUIProvider : MonoBehaviour, IDependOnState
+    public sealed class GameUIProvider : MonoBehaviour, IDependOnState
     {
         public event Action OnStartClicked;
         public event Action OnPauseClicked;
@@ -31,7 +31,7 @@ namespace GameResources.UI.Game.Scripts
 
         public async void Activate()
         {
-            var instance = await AddressablesLoader.Instantiate
+            var instance = await AddressablesLoader.InstantiateAndTryGetComponent
             (
                 ui, 
                 transform, 

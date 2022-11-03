@@ -2,5 +2,5 @@ using UnityEngine;
 
 namespace GameResources.Ground.Scripts
 {
-    public class Ground : MonoBehaviour { }
+    public sealed class Ground : MonoBehaviour { }
 }

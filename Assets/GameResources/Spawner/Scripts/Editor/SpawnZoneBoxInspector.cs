@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameResources.Spawner.Scripts.Editor
 {
-    public class SpawnZoneBoxInspector : UnityEditor.Editor
+    public sealed class SpawnZoneBoxInspector : UnityEditor.Editor
     {
         [DrawGizmo(GizmoType.InSelectionHierarchy)]
         private static void DrawGridPlane(SpawnZoneBox box, GizmoType gizmoType)

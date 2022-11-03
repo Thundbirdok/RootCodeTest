@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameResources.NewGameStarter.Scripts
 {
-    public class NewGameStarter : MonoBehaviour
+    public sealed class NewGameStarter : MonoBehaviour
     {
         [SerializeField]
         private CubesController cubesController;
@@ -27,6 +27,9 @@ namespace GameResources.NewGameStarter.Scripts
         [SerializeField]
         private int max = 7;
         
+        /// <summary>
+        /// Initialize new game
+        /// </summary>
         public void StartNewGame()
         {
             cubesController.ResetCubes();

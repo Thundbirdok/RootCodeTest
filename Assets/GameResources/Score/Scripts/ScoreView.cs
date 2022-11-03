@@ -1,10 +1,9 @@
-using System;
 using TMPro;
 using UnityEngine;
 
 namespace GameResources.Score.Scripts
 {
-    public class ScoreView : MonoBehaviour
+    public sealed class ScoreView : MonoBehaviour
     {
         [SerializeField]
         private TextMeshProUGUI text;
@@ -19,14 +18,8 @@ namespace GameResources.Score.Scripts
             SetText();
         }
 
-        private void OnDisable()
-        {
-            scoreHandler.OnCurrentScoreChanged -= SetText;
-        }
+        private void OnDisable() => scoreHandler.OnCurrentScoreChanged -= SetText;
 
-        private void SetText()
-        {
-            text.text = scoreHandler.CurrentScore.ToString();
-        }
+        private void SetText() => text.text = scoreHandler.CurrentScore.ToString();
     }
 }

@@ -3,7 +3,7 @@ using Random = UnityEngine.Random;
 
 namespace GameResources.Movement.Scripts
 {
-    public class Rotate : MonoBehaviour
+    public sealed class Rotate : MonoBehaviour
     {
         [SerializeField]
         private Vector3 speed;

@@ -9,6 +9,9 @@ namespace GameResources.Pause
 
         private static bool _isPaused;
         
+        /// <summary>
+        /// Pause game
+        /// </summary>
         public static void Unpause()
         {
             if (_isPaused == false)
@@ -21,6 +24,9 @@ namespace GameResources.Pause
             _isPaused = false;
         }
         
+        /// <summary>
+        /// Unpause game
+        /// </summary>
         public static void Pause()
         {
             if (_isPaused)

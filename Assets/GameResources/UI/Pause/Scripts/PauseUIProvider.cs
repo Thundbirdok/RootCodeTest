@@ -8,7 +8,7 @@ namespace GameResources.UI.Pause.Scripts
 {
     using GameStateMachine.Scripts.States;
     
-    public class PauseUIProvider : MonoBehaviour, IDependOnState
+    public sealed class PauseUIProvider : MonoBehaviour, IDependOnState
     {
         public event Action OnContinueClicked;
     
@@ -23,7 +23,7 @@ namespace GameResources.UI.Pause.Scripts
 
         public async void Activate()
         {
-            var instance = await AddressablesLoader.Instantiate
+            var instance = await AddressablesLoader.InstantiateAndTryGetComponent
             (
                 ui, 
                 transform, 

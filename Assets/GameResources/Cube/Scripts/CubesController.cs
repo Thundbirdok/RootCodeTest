@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameResources.Cube.Scripts
 {
-    public class CubesController : MonoBehaviour, IDependOnState
+    public sealed class CubesController : MonoBehaviour, IDependOnState
     {
         public event Action OnAllCubesFinish;
 
@@ -45,6 +45,9 @@ namespace GameResources.Cube.Scripts
 
         public void Deactivate() => gameObject.SetActive(false);
 
+        /// <summary>
+        /// Reset cubes
+        /// </summary>
         public void ResetCubes()
         {
             _finishedCubes = 0;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameResources.Path.Scripts
 {
-    public class PathController : MonoBehaviour
+    public sealed class PathController : MonoBehaviour
     {
         public event Action OnFreeWaypointChanged;
 
@@ -39,16 +39,23 @@ namespace GameResources.Path.Scripts
         [SerializeField]
         private WaypointDragger waypointDragger;
 
-        public void Init(int value)
+        /// <summary>
+        /// Initialize path
+        /// </summary>
+        /// <param name="freeWaypointsAmount"></param>
+        public void Init(int freeWaypointsAmount)
         {
-            FreeWaypointsAmount = value;
+            FreeWaypointsAmount = freeWaypointsAmount;
             
             pathContainer.Init();
         }
 
         public bool IsPathFinished(int index) => pathContainer.IsPathFinished(index);
-        public Vector3 GetPointOnPlane(int index) => pathContainer.GetPointOnPlane(index);
+        public Vector3 GetPointOnPlane(int index) => pathContainer.GetWaypointPositionOnGround(index);
 
+        /// <summary>
+        /// Create waypoint
+        /// </summary>
         public void CreateWaypoint()
         {
             if (FreeWaypointsAmount == 0)
@@ -68,6 +75,9 @@ namespace GameResources.Path.Scripts
             waypointDragger.SelectWaypoint(draggedWaypoint);
         }
 
+        /// <summary>
+        /// Delete waypoint
+        /// </summary>
         public void DeleteWaypoint()
         {
             var waypoint = waypointDragger.SelectedWaypoint;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GameResources.Spawner.Scripts
 {
-    public class SpawnZoneBox : MonoBehaviour
+    public sealed class SpawnZoneBox : MonoBehaviour
     {
         [SerializeField]
         private Transform leftDown;

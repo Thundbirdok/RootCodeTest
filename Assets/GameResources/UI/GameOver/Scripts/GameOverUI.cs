@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace GameResources.UI.GameOver.Scripts
 {
-    public class GameOverUI : MonoBehaviour
+    public sealed class GameOverUI : MonoBehaviour
     {
         public event Action OnPlayAgainClicked;
 

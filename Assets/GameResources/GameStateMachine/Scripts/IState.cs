@@ -1,7 +1,4 @@
 namespace GameResources.GameStateMachine.Scripts
 {
-    public interface IState
-    {
-    
-    }
+    public interface IState { }
 }

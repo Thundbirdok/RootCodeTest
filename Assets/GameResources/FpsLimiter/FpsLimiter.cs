@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GameResources.FpsLimiter
 {
-    public class FpsLimiter : MonoBehaviour
+    public sealed class FpsLimiter : MonoBehaviour
     {
         [SerializeField]
         private int targetFps = 60;

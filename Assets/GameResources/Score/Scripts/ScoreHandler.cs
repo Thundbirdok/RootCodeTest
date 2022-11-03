@@ -8,7 +8,7 @@ using UnityEngine;
 namespace GameResources.Score.Scripts
 {
     [CreateAssetMenu(fileName = "ScoreHandler", menuName = "Score/ScoreHandler")]
-    public class ScoreHandler : ScriptableObject, ISaveProgress
+    public sealed class ScoreHandler : ScriptableObject, ISaveProgress
     {
         public event Action OnCurrentScoreChanged;
         public event Action OnBestScoreChanged;
@@ -64,15 +64,16 @@ namespace GameResources.Score.Scripts
         
         private JObject _jObject = null;
 
-        public void AddPoints(int value)
-        {
-            CurrentScore += value;
-        }
+        /// <summary>
+        /// Add points to current score
+        /// </summary>
+        /// <param name="value">value</param>
+        public void AddPoints(int value) => CurrentScore += value;
 
-        public void ResetCurrentScore()
-        {
-            CurrentScore = 0;
-        }
+        /// <summary>
+        /// Reset current score
+        /// </summary>
+        public void ResetCurrentScore() => CurrentScore = 0;
 
         public void Load()
         {

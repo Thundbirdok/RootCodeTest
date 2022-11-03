@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameResources.Cube.Scripts
 {
-    public class CubeController : MonoBehaviour
+    public sealed class CubeController : MonoBehaviour
     {
         public event Action OnFinish;
         
@@ -23,12 +23,18 @@ namespace GameResources.Cube.Scripts
 
         private void FixedUpdate() => Move();
 
+        /// <summary>
+        /// Set cube on start position of path
+        /// </summary>
         public void SetStartPosition()
         {
             transform.position = pathController.StartPosition;
             _pointIndex = 1;
         }
         
+        /// <summary>
+        /// Start moving on the path
+        /// </summary>
         public void StartMove() => _isMoving = true;
 
         private void Move()

@@ -8,7 +8,7 @@ namespace GameResources.Path.Scripts
 {
     using Ground.Scripts;
     
-    public class Pointer : MonoBehaviour, IDependOnState
+    public sealed class Pointer : MonoBehaviour, IDependOnState
     {
         public event Action OnPointerPositionChanged;
         public event Action OnPointerUp;

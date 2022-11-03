@@ -6,16 +6,19 @@ namespace GameResources.Coin.Scripts
 {
     using GameResources.Spawner.Scripts;
     
-    public class CoinsHandler : MonoBehaviour
+    public sealed class CoinsHandler : MonoBehaviour
     {
         [SerializeField]
         private Spawner coinsSpawner;
 
         [SerializeField]
-        private ScoreHandler scoreHanler;
+        private ScoreHandler scoreHandler;
         
         private readonly List<Coin> _coins = new List<Coin>();
 
+        /// <summary>
+        /// Spawn coins
+        /// </summary>
         public async void Spawn()
         {
             await coinsSpawner.Spawn();
@@ -50,9 +53,6 @@ namespace GameResources.Coin.Scripts
             _coins.Clear();
         }
 
-        private void AddPoints(int value)
-        {
-            scoreHanler.AddPoints(value);
-        }
+        private void AddPoints(int value) => scoreHandler.AddPoints(value);
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameResources.Path.Scripts
 {
-    public class PathDrawer : MonoBehaviour
+    public sealed class PathDrawer : MonoBehaviour
     {
         [SerializeField]
         private PathController pathController;

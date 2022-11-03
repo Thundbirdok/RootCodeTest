@@ -5,7 +5,7 @@ using UnityEngine;
 namespace GameResources.Coin.Scripts
 {
     [RequireComponent(typeof(Collider))]
-    public class Coin : MonoBehaviour
+    public sealed class Coin : MonoBehaviour
     {
         public event Action<int> OnCollected;
 
@@ -21,7 +21,7 @@ namespace GameResources.Coin.Scripts
                 return;
             }
             
-            if (other.attachedRigidbody.TryGetComponent(out CubeController cube))
+            if (other.attachedRigidbody.TryGetComponent(out CubeController _))
             {
                 Collect();
             }
@@ -32,7 +32,7 @@ namespace GameResources.Coin.Scripts
             _isCollected = true;
             OnCollected?.Invoke(value);
 
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 }
