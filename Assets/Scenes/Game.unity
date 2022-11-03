@@ -173,7 +173,7 @@ MonoBehaviour:
     container: {fileID: 794049618}
     prefab: {fileID: 7121707384187254091, guid: 39523bdcaec61cb418a1b83d48bf00ba, type: 3}
     maxSpawnPerFrame: 10
-  scoreHanler: {fileID: 11400000, guid: e5c1e79df5d563f4bb30d0c65a8b5acf, type: 2}
+  scoreHandler: {fileID: 11400000, guid: e5c1e79df5d563f4bb30d0c65a8b5acf, type: 2}
 --- !u!1 &16414258
 GameObject:
   m_ObjectHideFlags: 0
