@@ -1,31 +1,23 @@
 using System;
-using GameResources.GameStateMachine.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameResources.UI.Scripts
+namespace GameResources.UI.Pause.Scripts
 {
-    public class PauseUI : MonoBehaviour, IDependOnState
+    public class PauseUI : MonoBehaviour
     {
         public event Action OnContinueClicked;
-        
-        public bool IsActiveInThisState => true;
-        public Type State => typeof(GameStateMachine.Scripts.States.Pause);
 
         [SerializeField]
         private Button continueButton;
         
-        public void Activate()
+        private void OnEnable()
         {
             continueButton.onClick.AddListener(InvokeOnContinueClick);
-            
-            gameObject.SetActive(true);
         }
 
-        public void Deactivate()
+        private void OnDisable()
         {
-            gameObject.SetActive(false);
-            
             continueButton.onClick.RemoveListener(InvokeOnContinueClick);
         }
         

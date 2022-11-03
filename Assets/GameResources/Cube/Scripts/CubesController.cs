@@ -1,7 +1,7 @@
 using System;
 using GameResources.GameStateMachine.Scripts;
 using GameResources.GameStateMachine.Scripts.States;
-using GameResources.UI.Scripts;
+using GameResources.UI.Game.Scripts;
 using UnityEngine;
 
 namespace GameResources.Cube.Scripts
@@ -17,7 +17,7 @@ namespace GameResources.Cube.Scripts
         private CubeController[] cubes;
 
         [SerializeField]
-        private GameUI gameUi;
+        private GameUIProvider gameUi;
         
         private int _finishedCubes = 0;
         

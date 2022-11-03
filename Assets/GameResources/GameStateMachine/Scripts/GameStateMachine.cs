@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using GameResources.Cube.Scripts;
 using GameResources.GameStateMachine.Scripts.States;
-using GameResources.UI.Scripts;
+using GameResources.UI.Game.Scripts;
+using GameResources.UI.GameOver.Scripts;
+using GameResources.UI.Pause.Scripts;
 using UnityEngine;
 
 namespace GameResources.GameStateMachine.Scripts
@@ -15,13 +17,13 @@ namespace GameResources.GameStateMachine.Scripts
         private CubesController cubesController;
 
         [SerializeField]
-        private GameUI gameUI;
+        private GameUIProvider gameUI;
         
         [SerializeField]
-        private PauseUI pauseUI;
+        private PauseUIProvider pauseUI;
 
         [SerializeField]
-        private GameOverUI gameOverUi;
+        private GameOverUIProvider gameOverUi;
         
         [SerializeField]
         private NewGameStarter newGameStarter;

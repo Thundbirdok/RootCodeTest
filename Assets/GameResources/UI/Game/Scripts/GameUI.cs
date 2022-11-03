@@ -1,38 +1,43 @@
 using System;
-using GameResources.GameStateMachine.Scripts;
-using GameResources.GameStateMachine.Scripts.States;
+using GameResources.Path.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameResources.UI.Scripts
+namespace GameResources.UI.Game.Scripts
 {
-    public class GameUI : MonoBehaviour, IDependOnState
+    public class GameUI : MonoBehaviour
     {
         public event Action OnStartClicked;
         public event Action OnPauseClicked;
-        
-        public bool IsActiveInThisState => true;
-        public Type State => typeof(Game);
 
+        [SerializeField]
+        private WaypointContainerView waypointContainerViewA;
+
+        [SerializeField]
+        private WaypointContainerView waypointContainerViewB;
+        
         [SerializeField]
         private Button start;
 
         [SerializeField]
         private Button pause;
+
+        public void Construct(PathController a, PathController b)
+        {
+            waypointContainerViewA.SetPathController(a);
+            waypointContainerViewB.SetPathController(b);
+        }
         
-        public void Activate()
+        private void OnEnable()
         {
             start.onClick.AddListener(InvokeOnStartClick);
             pause.onClick.AddListener(InvokePauseClick);
             
             start.gameObject.SetActive(true);
-            gameObject.SetActive(true);
         }
 
-        public void Deactivate()
+        private void OnDisable()
         {
-            gameObject.SetActive(false);
-            
             start.onClick.RemoveListener(InvokeOnStartClick);
             pause.onClick.RemoveListener(InvokePauseClick);
         }

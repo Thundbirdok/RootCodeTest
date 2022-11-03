@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,37 +8,41 @@ namespace GameResources.Path.Scripts
     {
         [SerializeField]
         private TextMeshProUGUI text;
-
-        [SerializeField]
-        private PathController pathController;
         
-        private void OnEnable()
+        private PathController _pathController;
+        
+        public void SetPathController(PathController pathController)
         {
+            _pathController = pathController;
+            
             SetText();
 
-            pathController.OnFreeWaypointChanged += SetText;
+            _pathController.OnFreeWaypointChanged += SetText;
         }
 
         private void OnDisable()
         {
-            pathController.OnFreeWaypointChanged -= SetText;
+            if (_pathController != null)
+            {
+                _pathController.OnFreeWaypointChanged -= SetText;    
+            }
         }
 
-        private void SetText()
-        {
-            text.text = pathController.FreeWaypointsAmount.ToString();
-        }
-        
         public void OnDrag(PointerEventData eventData)
         {
             if (EventSystem.current.IsPointerOverGameObject() == false)
             {
-                pathController.CreateWaypoint();
+                _pathController.CreateWaypoint();
 
                 return;
             }
 
-            pathController.DeleteWaypoint();
+            _pathController.DeleteWaypoint();
+        }
+        
+        private void SetText()
+        {
+            text.text = _pathController.FreeWaypointsAmount.ToString();
         }
     }
 }

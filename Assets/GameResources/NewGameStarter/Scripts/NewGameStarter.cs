@@ -1,6 +1,7 @@
 using GameResources.Coin.Scripts;
 using GameResources.Cube.Scripts;
 using GameResources.Path.Scripts;
+using GameResources.Score.Scripts;
 using UnityEngine;
 
 namespace GameResources.NewGameStarter.Scripts
@@ -12,6 +13,9 @@ namespace GameResources.NewGameStarter.Scripts
 
         [SerializeField]
         private CoinsHandler coinsHandler;
+
+        [SerializeField]
+        private ScoreHandler scoreHandler;
         
         [SerializeField]
         private PathController[] pathControllers;
@@ -28,6 +32,8 @@ namespace GameResources.NewGameStarter.Scripts
             cubesController.ResetCubes();
 
             coinsHandler.Spawn();
+            
+            scoreHandler.ResetCurrentScore();
             
             foreach (var pathController in pathControllers)
             {

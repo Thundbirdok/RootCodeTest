@@ -1,29 +1,24 @@
 using System;
-using GameResources.GameStateMachine.Scripts;
-using GameResources.GameStateMachine.Scripts.States;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameResources.UI.Scripts
+namespace GameResources.UI.GameOver.Scripts
 {
-    public class GameOverUI : MonoBehaviour, IDependOnState
+    public class GameOverUI : MonoBehaviour
     {
         public event Action OnPlayAgainClicked;
-        
-        public bool IsActiveInThisState => true;
-        public Type State => typeof(GameOver);
 
         [SerializeField]
         private Button playAgain;
         
-        public void Activate()
+        private void OnEnable()
         {
             playAgain.onClick.AddListener(InvokeOnPlayAgain);
             
             gameObject.SetActive(true);
         }
 
-        public void Deactivate()
+        private void OnDisable()
         {
             playAgain.onClick.RemoveListener(InvokeOnPlayAgain);
             
